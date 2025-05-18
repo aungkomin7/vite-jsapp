@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header class="fixed w-full">
+      <div class="container mx-auto py-3">
+        <div class="flex items-center justify-between">
+          <h1 class="text-3xl font-bold">Logo.</h1>
+          <div class="max-sm:hidden">
+            <ul class="flex space-x-5">
+              <li>
+                <a class="text-lg font-medium text-slate-800" href="#">Home</a>
+              </li>
+              <li>
+                <a class="text-lg font-medium text-slate-800" href="#">About</a>
+              </li>
+              <li>
+                <a class="text-lg font-medium text-slate-800" href="#"
+                  >Services</a
+                >
+              </li>
+              <li>
+                <a class="text-lg font-medium text-slate-800" href="#"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <button class="md:hidden" id="controlNavBtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-8 stroke-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="h-16"></div>
+
+    <section>
+      <div class="md:hidden">
+        <div
+          class="flex flex-col items-center bg-slate-200 w-[50%] h-screen fixed right-0 translate-x-full duration-200"
+          id="controlNav"
+        >
+          <a
+            class="block w-full text-center py-2 font-medium text-slate-800 bg-sky-400"
+            href="#"
+            >Home</a
+          >
+
+          <a
+            class="block w-full text-center py-2 font-medium text-slate-800 bg-sky-400"
+            href="#"
+            >About</a
+          >
+
+          <a
+            class="block w-full text-center py-2 font-medium text-slate-800 bg-sky-400"
+            href="#"
+            >Services</a
+          >
+
+          <a
+            class="block w-full text-center py-2 font-medium text-slate-800 bg-sky-400"
+            href="#"
+            >Contact</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container mx-auto">
+        <h1 class="text-2xl font-bold text-slate-800 mb-5 max-sm:text-center">
+          Your Skills (<span id="skillCount">0</span>)
+        </h1>
+
+        <ul
+          class="flex gap-4 max-sm:flex-col max-sm:w-[full] max-sm:text-center max-sm:gap-0"
+        >
+          <li class="list border px-4 py-2 max-sm:py-5">HTML</li>
+          <li class="list border px-4 py-2 max-sm:py-5">CSS</li>
+          <li class="list border px-4 py-2 max-sm:py-5">JS</li>
+          <li class="list border px-4 py-2 max-sm:py-5">React</li>
+          <li class="list border px-4 py-2 max-sm:py-5">Tailwind</li>
+          <li class="list border px-4 py-2 max-sm:py-5">Git</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="container mx-auto">
+        <div class="flex gap-3">
+          <img
+            class="img h-[120px]"
+            id="img1"
+            src="./assets/images/love.gif"
+            alt=""
+          />
+          <img
+            class="img h-[120px]"
+            id="img2"
+            src="./assets/images/love.gif"
+            alt=""
+          />
+          <img
+            class="img h-[120px]"
+            id="img3"
+            src="./assets/images/love.gif"
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+
+    <script src="./js/nav.js"></script>
+  </body>
+</html>
