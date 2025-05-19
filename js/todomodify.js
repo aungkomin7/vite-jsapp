@@ -3,13 +3,8 @@ const taskAddBtn = document.querySelector("#taskAddBtn");
 const listGroup = document.querySelector("#listGroup");
 const taskTotal = document.querySelector("#taskTotal");
 const doneTaskTotal = document.querySelector("#doneTaskTotal");
-
-const addList = () => {
-  listGroup.append(createNewList(taskInput.value));
-  taskInput.value = null;
-
-  updateTaskTotal();
-};
+// let count = 1;
+//action or business logic
 
 const updateTaskTotal = () => {
   const list = document.querySelectorAll(".list");
@@ -23,16 +18,17 @@ const updateDoneTaskTotal = () => {
 
 const createNewList = (currenttext) => {
   const list = document.createElement("div");
+  list.id = "list" + Date.now();
   list.classList.add("list");
 
   list.innerHTML = `
-    <div class="flex justify-between items-center border p-3 mb-3">
+    <div class="flex justify-between animate__animated animate__zoomIn items-center border p-3 mb-3">
     <div class="flex items-center gap-3">
     <input type="checkbox" class="list-done-check accent-stone-950" />
     <p class="mr-16 font-mono text-wrap list-task">${currenttext}</p>
     </div>
     <div class="control">
-    <button class="border border-stone-950 p-2 list-edit-btn disabled:opacity-20">
+    <button class="border border-stone-950 p-2 list-edit-btn disabled:opacity-20 active:scale-90 duration-200">
     <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -48,14 +44,14 @@ const createNewList = (currenttext) => {
     />
     </svg>
     </button>
-    <button class="border border-stone-950 p-2 list-del-btn">
+    <button class="border border-stone-950 p-2 list-del-btn active:scale-90 duration-200">
     <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="currentColor"
-    class="size-4 pointer-events-none"
+    class="size-4 pointer-events-none "
     >
     <path
     stroke-linecap="round"
@@ -117,53 +113,103 @@ const createNewList = (currenttext) => {
   return list;
 };
 
-taskAddBtn.addEventListener("click", addList);
-
-listGroup.addEventListener("click", (event) => {
-  const list = event.target.closest(".list");
-  const listTask = list.querySelector(".list-task");
-  const listDoneCheck = list.querySelector(".list-done-check");
-  const listEditBtn = list.querySelector(".list-edit-btn");
-  const listDelBtn = list.querySelector(".list-del-btn");
-
-  if (event.target.classList.contains("list-del-btn")) {
-    console.log("delbtn");
-    if (window.confirm("Are you sure to delete")) {
-      list.remove();
+const deleteList = (listId) => {
+  const currentlist = document.querySelector(`#${listId}`);
+  if (window.confirm("Are you sure to delete")) {
+    currentlist.classList.add("animate__animated", "animate__zoomOut");
+    currentlist.addEventListener("animationend", () => {
+      currentlist.remove();
       updateTaskTotal();
       updateDoneTaskTotal();
-    }
-  } else if (event.target.classList.contains("list-edit-btn")) {
-    console.log("editbtn");
-    listEditBtn.setAttribute("disabled", true);
-    listDoneCheck.setAttribute("disabled", true);
-    const newTaskInput = document.createElement("input");
-    newTaskInput.className =
-      "border border-stone-950 px-2 w-[180px] focus-visible:outline-none";
-    listTask.after(newTaskInput);
-    listTask.classList.add("hidden");
-    newTaskInput.value = listTask.innerText;
-    newTaskInput.focus();
-
-    newTaskInput.addEventListener("blur", () => {
-      listEditBtn.removeAttribute("disabled");
-      listDoneCheck.removeAttribute("disabled");
-      console.log("hello");
-      listTask.innerText = newTaskInput.value;
-      listTask.classList.remove("hidden");
-      newTaskInput.remove();
     });
+  }
+};
+
+const editList = (listId) => {
+  const currentlist = document.querySelector(`#${listId}`);
+
+  const listTask = currentlist.querySelector(".list-task");
+  const listDoneCheck = currentlist.querySelector(".list-done-check");
+  const listEditBtn = currentlist.querySelector(".list-edit-btn");
+  listEditBtn.setAttribute("disabled", true);
+  listDoneCheck.setAttribute("disabled", true);
+  const newTaskInput = document.createElement("input");
+  newTaskInput.className =
+    "border border-stone-950 px-2 w-[180px] focus-visible:outline-none";
+  listTask.after(newTaskInput);
+  listTask.classList.add("hidden");
+  newTaskInput.value = listTask.innerText;
+  newTaskInput.focus();
+
+  const newTaskInputHandler = () => {
+    listEditBtn.removeAttribute("disabled");
+    listDoneCheck.removeAttribute("disabled");
+    listTask.innerText = newTaskInput.value;
+    listTask.classList.remove("hidden");
+    newTaskInput.remove();
+  };
+
+  newTaskInput.addEventListener("blur", newTaskInputHandler);
+};
+
+const doneList = (listId) => {
+  const currentlist = document.querySelector(`#${listId}`);
+
+  const listTask = currentlist.querySelector(".list-task");
+  const listDoneCheck = currentlist.querySelector(".list-done-check");
+  const listEditBtn = currentlist.querySelector(".list-edit-btn");
+  updateDoneTaskTotal();
+  listTask.classList.toggle("line-through");
+  currentlist.classList.toggle("opacity-50");
+  currentlist.classList.toggle("scale-90");
+  currentlist.classList.add("duration-200");
+  if (listDoneCheck.checked) {
+    listEditBtn.setAttribute("disabled", true);
+  } else {
+    listEditBtn.removeAttribute("disabled");
+  }
+};
+
+//handler
+const listGroupHandler = (event) => {
+  const list = event.target.closest(".list");
+
+  if (event.target.classList.contains("list-del-btn")) {
+    deleteList(event.target.closest(".list").id);
+  } else if (event.target.classList.contains("list-edit-btn")) {
+    editList(event.target.closest(".list").id);
   } else if (event.target.classList.contains("list-done-check")) {
-    console.log("check");
-    updateDoneTaskTotal();
-    listTask.classList.toggle("line-through");
-    list.classList.toggle("opacity-50");
-    list.classList.toggle("scale-90");
-    list.classList.add("duration-200");
-    if (listDoneCheck.checked) {
-      listEditBtn.setAttribute("disabled", true);
+    doneList(event.target.closest(".list").id);
+  }
+};
+
+const addList = (text) => {
+  listGroup.append(createNewList(text));
+  taskInput.value = null;
+
+  updateTaskTotal();
+};
+
+const taskAddBtnHandler = () => {
+  if (taskInput.value.trim()) {
+    addList(taskInput.value);
+  } else {
+    alert("fill something");
+  }
+};
+
+const taskInputHandler = (event) => {
+  if (event.key === "Enter") {
+    // addList(taskInput.value);
+    if (taskInput.value.trim()) {
+      addList(taskInput.value);
     } else {
-      listEditBtn.removeAttribute("disabled");
+      alert("fill something");
     }
   }
-});
+};
+
+//listener
+taskAddBtn.addEventListener("click", taskAddBtnHandler);
+listGroup.addEventListener("click", listGroupHandler);
+taskInput.addEventListener("keyup", taskInputHandler);

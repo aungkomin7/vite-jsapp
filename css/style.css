@@ -1,1 +1,16 @@
+@import url("../node_modules/animate.css/animate.css");
 @import "tailwindcss";
+
+/* .slide-in-down {
+  animation-name: slideInDown;
+  animation-duration: 500ms;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translatey(-30px);
+  }
+  to {
+    transform: translatey(0px);
+  }
+} */
